@@ -1,0 +1,24 @@
+{
+  "name": "anistation-s-be",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GaspareNavarra/Anistation-s-BE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GaspareNavarra/Anistation-s-BE/issues"
+  },
+  "homepage": "https://github.com/GaspareNavarra/Anistation-s-BE#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
