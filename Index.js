@@ -1,5 +1,6 @@
 import express from 'express';
 import axios from 'axios';
+import HeaderSettings from './HeaderSettings.json';
 
 //-----------------------Default(Start)-----------------------//
 const app = express();
@@ -51,25 +52,24 @@ app.get('/search', async (req, res) => {
 //-----------------------Funzioni(Start)-----------------------//
 
 async function searchAnime(keyword) {
-	//TODO: attualmente ritorna solo la pagina html della ricerca, sistemare ritornando i dati che invece vengono visualizzati
-  // const url = `https://www.animeworld.ac/api/search/v2?keyword=${encodeURIComponent(keyword)}`;
-  const url = `https://www.animeworld.ac/search?keyword=${encodeURIComponent(keyword)}`;
+  const url = `https://www.animeworld.ac/api/search/v2?keyword=${encodeURIComponent(keyword)}`;
 
 	console.log(url.replaceAll("%20", "+"));
-  const response = await axios.get(url.replaceAll("%20", "+"), null, {
+  const response = await axios.post(url.replaceAll("%20", "+"), null, {
     headers: {
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
       "Referer": "https://www.animeworld.ac",
       "Origin": "https://www.animeworld.ac",
-      "X-Requested-With": "XMLHttpRequest"
-    }
-    // timeout: 5000
+      "X-Requested-With": "XMLHttpRequest",
+      'Csrf-Token': HeaderSettings.CsrfToken,
+      'Cookie': HeaderSettings.Cookie
+    },
+    timeout: 5000
   });
 
   return response.data;
 }
 //-----------------------Funzioni(End)-----------------------//
-
 
 
 
