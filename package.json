@@ -1,5 +1,6 @@
 {
   "name": "anistation-s-be",
+  "type": "module",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/GaspareNavarra/Anistation-s-BE#readme",
   "description": "",
   "dependencies": {
+    "axios": "^1.13.2",
     "express": "^5.2.1"
   }
 }
