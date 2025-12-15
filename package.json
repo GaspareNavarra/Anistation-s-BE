@@ -1,25 +1,25 @@
 {
-  "name": "anistation-s-be",
-  "type": "module",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GaspareNavarra/Anistation-s-BE.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/GaspareNavarra/Anistation-s-BE/issues"
-  },
-  "homepage": "https://github.com/GaspareNavarra/Anistation-s-BE#readme",
-  "description": "",
-  "dependencies": {
-    "axios": "^1.13.2",
-    "express": "^5.2.1"
-  }
+    "name": "anistation-s-be",
+    "type": "module",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/GaspareNavarra/Anistation-s-BE.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/GaspareNavarra/Anistation-s-BE/issues"
+    },
+    "homepage": "https://github.com/GaspareNavarra/Anistation-s-BE#readme",
+    "description": "",
+    "dependencies": {
+        "axios": "^1.13.2",
+        "express": "^5.2.1"
+    }
 }
