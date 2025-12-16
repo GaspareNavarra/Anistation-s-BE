@@ -1,3 +1,3 @@
 export default {
-    animeworldHomePageUrl: "https://www.animeworld.ac/"
+    animeworldHomePageUrl: "https://www.animeworld.ac/",
 }

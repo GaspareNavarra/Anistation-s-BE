@@ -1,12 +1,13 @@
 import express from "express";
 import axios from "axios";
-import fs from "fs";
+import fs, { link } from "fs";
 import HeaderSettings from "./HeaderSettings.json";
 import constant from "./constant";
 
 //-----------------------Default(Start)-----------------------//
 const app = express();
 const port = 3000;
+let headers = {};
 
 app.use(express.json());
 
@@ -34,6 +35,24 @@ app.get("/search", async (req, res) => {
   }
 });
 
+//Retrieve downloaded episode
+// Recuperare il codice identificativo della puntata
+
+// Body
+// {
+//   link: "",
+//   identifier: ""
+// }
+app.get("/download", async (req, res) => {
+  // link + identifier
+  try {
+    const response = await downloadAllEpisode(req.body);
+    res.send(response);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 //-----------------------Main(End)-----------------------//
 
 //-----------------------Funzioni(Start)-----------------------//
@@ -43,35 +62,55 @@ async function searchAnime(keyword, res) {
     keyword
   )}`;
 
-  updateHeaderSettings(res);
-
   console.log("Eseguo [searchAnime] con url: " + url.replaceAll("%20", "+"));
 
   const response = await axios.post(url.replaceAll("%20", "+"), null, {
-    headers: {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-      Referer: "https://www.animeworld.ac",
-      Origin: "https://www.animeworld.ac",
-      "X-Requested-With": "XMLHttpRequest",
-      "Csrf-Token": HeaderSettings.CsrfToken,
-      Cookie: HeaderSettings.Cookie,
-    },
+    headers
   });
 
   return response.data;
 }
 
+async function downloadAllEpisode(body) {
+  const getEpisodeIdUrl =
+    constant.animeworldHomePageUrl +
+    "play/" +
+    body.link +
+    "." +
+    body.identifier;
+
+  const response = await axios.get(getEpisodeIdUrl, null, {
+    headers
+  });
+
+  const ids = extractEpisodeIds(response.data);
+
+  const linkEpisodes = await getDownloadLinkEpisode(ids);
+
+}
+
+async function getDownloadLinkEpisode(ids) {
+
+}
+
+function extractEpisodeIds(html) {
+  const ids = [];
+  let index = 0;
+
+  while ((index = html.indexOf('data-episode-id="', index)) !== -1) {
+    const start = index + 17;
+    const end = html.indexOf('"', start);
+    ids.push(html.substring(start, end));
+    index = end;
+  }
+
+  return ids;
+}
+
 async function updateHeaderSettings(res) {
   try {
     const response = await axios.get(constant.animeworldHomePageUrl, null, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-        Referer: "https://www.animeworld.ac",
-        Origin: "https://www.animeworld.ac",
-        "X-Requested-With": "XMLHttpRequest",
-        // 'Csrf-Token': HeaderSettings.CsrfToken,
-        // 'Cookie': HeaderSettings.Cookie
-      },
+      headers,
     });
 
     const startingIndex = response.data.indexOf('id="csrf-token"');
@@ -108,6 +147,15 @@ function saveHeaderSettings(data) {
 //-----------------------Listener(Start)-----------------------//
 
 app.listen(port, () => {
+  updateHeaderSettings(res);
+  headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    Referer: "https://www.animeworld.ac",
+    Origin: "https://www.animeworld.ac",
+    "X-Requested-With": "XMLHttpRequest",
+    "Csrf-Token": HeaderSettings.CsrfToken,
+    Cookie: HeaderSettings.Cookie,
+  };
   console.log(`Server avviato su http://localhost:${port}`);
 });
 //-----------------------Listener(End)-----------------------//
